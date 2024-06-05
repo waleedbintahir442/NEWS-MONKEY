@@ -56,18 +56,20 @@ export default function News() {
 
             {loading ? (
                 <p className='load'>Loading...</p>
+            ) : articles.length === 0 ? (
+                <p className='nload'>No results found</p>
             ) : (
                 <>
                     <div className='row'>
-                        {articles.map((element, index) => (
+                        {articles.map((element) => (
                             <div className='col my-3' key={element.uniqueId}>
                                 <Newsitem
+                                    source={element.source.name}
                                     item={element.title ? element.title.slice(0, 54) : ""}
                                     description={element.description ? element.description.slice(0, 136) : ""}
-                                    imgurl={!element.urlToImage ? "NIL" : element.urlToImage}
+                                    imgurl={!element.urlToImage ? "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg" : element.urlToImage}
                                     author={element.author}
                                     url={element.url}
-                                    key={element.uniqueId}
                                 />
                             </div>
                         ))}
@@ -83,4 +85,3 @@ export default function News() {
         </div>
     );
 }
-
