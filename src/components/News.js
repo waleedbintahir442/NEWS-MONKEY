@@ -15,7 +15,7 @@ export default function News() {
                 setLoading(true);
                 const response = await fetch(`https://newsapi.org/v2/everything?q=${searchValue}&sortBy=publishedAt&apiKey=80153bbc79d340f58eb2f7b651e468cd&page=${page}&pagesize=12`);
                 const data = await response.json();
-                setArticles(data.articles.map((article, index) => ({ ...article, uniqueId: `${article.url}_${index}` })));
+                setArticles(data.articles?.map((article, index) => ({ ...article, uniqueId: `${article.url}_${index}` })));
             } catch (error) {
                 console.error('Error fetching news:', error?.map);
             } finally {
@@ -58,10 +58,10 @@ export default function News() {
                 <p className='load'>Loading...</p>
             ) : articles.length === 0 ? (
                 <p className='nload'>No results found</p>
-            ) : (
+            ) : articles&& (
                 <>
                     <div className='row'>
-                        {articles.map((element) => (
+                        {articles?.map((element) => (
                             <div className='col my-3' key={element.uniqueId}>
                                 <Newsitem
                                     source={element.source.name}
