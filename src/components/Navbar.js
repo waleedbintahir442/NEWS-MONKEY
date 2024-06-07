@@ -23,6 +23,9 @@ export default function Navbar() {
             <li className="nav-item">
               <Link className="nav-link" to="/About" style={{ color: 'white' }}>About</Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/scroll" style={{ color: 'white' }}>News</Link>
+            </li>
 
 
           </ul>

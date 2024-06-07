@@ -1,4 +1,3 @@
-// News.js
 import React, { useState, useEffect, useContext } from 'react';
 import Newsitem from './Newsitem';
 import './News.css';
@@ -16,7 +15,7 @@ export default function News() {
                 setLoading(true);
                 const response = await fetch(`https://newsapi.org/v2/everything?q=${searchValue}&sortBy=publishedAt&apiKey=80153bbc79d340f58eb2f7b651e468cd&page=${page}&pagesize=12`);
                 const data = await response.json();
-                setArticles(data.articles);
+                setArticles(data.articles.map((article, index) => ({ ...article, uniqueId: `${article.url}_${index}` })));
             } catch (error) {
                 console.error('Error fetching news:', error);
             } finally {
@@ -46,10 +45,10 @@ export default function News() {
             <div className="news-ticker">
                 <div className="ticker-wrap">
                     <div className="ticker-move">
-                        {articles.map((article, index) => (
-                           <b> <div className="ticker-item" key={index}>
-                                {article.title} {'.'}
-                            </div></b>
+                        {articles.map((article) => (
+                            <div className="ticker-item" key={article.uniqueId}>
+                                <b>{article.title}</b>
+                            </div>
                         ))}
                     </div>
                 </div>
@@ -57,12 +56,15 @@ export default function News() {
 
             {loading ? (
                 <p className='load'>Loading...</p>
+            ) : articles.length === 0 ? (
+                <p className='nload'>No results found</p>
             ) : (
                 <>
                     <div className='row'>
                         {articles.map((element) => (
-                            <div className='col my-3' key={element.url}>
+                            <div className='col my-3' key={element.uniqueId}>
                                 <Newsitem
+                                    source={element.source.name}
                                     item={element.title ? element.title.slice(0, 54) : ""}
                                     description={element.description ? element.description.slice(0, 136) : ""}
                                     imgurl={!element.urlToImage ? "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg" : element.urlToImage}
@@ -73,7 +75,7 @@ export default function News() {
                         ))}
                     </div>
 
-                    <div className='container d-flex justify-content-between'>
+                    <div className='container d-flex justify-content-between my-3'>
                         <button type="button" onClick={handlePrev} className="btn btn-primary">&larr; Previous</button>
                         <span style={{ color: 'white', marginTop: '12px' }}>{page}</span>
                         <button type="button" onClick={handleNext} className="btn btn-primary">Next &rarr;</button>
