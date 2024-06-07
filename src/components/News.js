@@ -14,15 +14,18 @@ export default function News() {
             try {
                 setLoading(true);
                 const response = await fetch(`https://newsapi.org/v2/everything?q=${searchValue}&sortBy=publishedAt&apiKey=80153bbc79d340f58eb2f7b651e468cd&page=${page}&pagesize=12`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch news');
+                }
                 const data = await response.json();
                 setArticles(data.articles.map((article, index) => ({ ...article, uniqueId: `${article.url}_${index}` })));
             } catch (error) {
-                console.error('Error fetching news:', error?.map);
+                console.error('Error fetching news:', error);
             } finally {
                 setLoading(false);
             }
         };
-
+    
         if (searchValue) {
             fetchNews();
         }
