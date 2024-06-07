@@ -13,7 +13,7 @@ export default function Newsitem(props) {
             justifyContent: "end",
             position: "absolute",
             right: "0",
-      }}><span class=" badge pill bg-success" >
+      }}><span className=" badge pill bg-success" >
             {props.source}
           </span></div>
         <img src={props.imgurl} className="card-img-top" alt="..." style={{ height: '200px', }} />

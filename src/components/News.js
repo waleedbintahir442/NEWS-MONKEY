@@ -17,7 +17,7 @@ export default function News() {
                 const data = await response.json();
                 setArticles(data.articles.map((article, index) => ({ ...article, uniqueId: `${article.url}_${index}` })));
             } catch (error) {
-                console.error('Error fetching news:', error);
+                console.error('Error fetching news:', error?.map);
             } finally {
                 setLoading(false);
             }
