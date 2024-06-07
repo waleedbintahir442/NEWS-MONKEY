@@ -13,14 +13,21 @@ export default function News() {
         const fetchNews = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`https://newsapi.org/v2/everything?q=${searchValue}&sortBy=publishedAt&apiKey=80153bbc79d340f58eb2f7b651e468cd&page=${page}&pagesize=12`);
+                const response = await fetch(`https://newsapi.org/v2/everything?q=${encodeURIComponent(searchValue)}&sortBy=publishedAt&apiKey=80153bbc79d340f58eb2f7b651e468cd&page=${page}&pageSize=12`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        //  
+                        // Add any additional headers if required by the API
+                    }
+                });
                 if (!response.ok) {
-                    throw new Error('Failed to fetch news');
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const data = await response.json();
                 setArticles(data.articles?.map((article, index) => ({ ...article, uniqueId: `${article.url}_${index}` })));
             } catch (error) {
                 console.error('Error fetching news:', error);
+                // Handle error state or display error message
             } finally {
                 setLoading(false);
             }
@@ -30,7 +37,7 @@ export default function News() {
             fetchNews();
         }
     }, [page, searchValue]);
-
+    
     const handleNext = () => {
         setPage(page + 1);
     };
