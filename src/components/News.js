@@ -18,7 +18,7 @@ export default function News() {
                     throw new Error('Failed to fetch news');
                 }
                 const data = await response.json();
-                setArticles(data.articles.map((article, index) => ({ ...article, uniqueId: `${article.url}_${index}` })));
+                setArticles(data.articles?.map((article, index) => ({ ...article, uniqueId: `${article.url}_${index}` })));
             } catch (error) {
                 console.error('Error fetching news:', error);
             } finally {
@@ -61,10 +61,10 @@ export default function News() {
                 <p className='load'>Loading...</p>
             ) : articles.length === 0 ? (
                 <p className='nload'>No results found</p>
-            ) : (
+            ) : articles&& (
                 <>
                     <div className='row'>
-                        {articles.map((element) => (
+                        {articles?.map((element) => (
                             <div className='col my-3' key={element.uniqueId}>
                                 <Newsitem
                                     source={element.source.name}
